@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2019 at 04:25 PM
+-- Generation Time: Mar 18, 2019 at 06:46 PM
 -- Server version: 5.6.15-log
 -- PHP Version: 5.5.8
 
@@ -19,6 +19,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `orders`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `booking`
+--
+
+CREATE TABLE IF NOT EXISTS `booking` (
+  `bookingID` int(11) NOT NULL,
+  `memberNo` int(11) NOT NULL,
+  `performanceID` int(11) NOT NULL,
+  `seats` int(11) NOT NULL,
+  PRIMARY KEY (`bookingID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `booking`
+--
+
+INSERT INTO `booking` (`bookingID`, `memberNo`, `performanceID`, `seats`) VALUES
+(0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -59,7 +80,8 @@ CREATE TABLE IF NOT EXISTS `customers` (
 INSERT INTO `customers` (`custID`, `custName`, `custAddress`, `custTown`, `custPostcode`, `custTel`, `custEmail`) VALUES
 (56, 'Foo Inc.', '23 Main St.', 'London', 'N9 3TB', '02083641248', 'enquiries@fooinc.com'),
 (2, 'Freens R Us', '35 Cow Slip Hill', 'Hatfield', 'AL10 4NA', '07896541235', 'freensrus@freens.com'),
-(13, 'Kevlins', '11 Southbury Rd.', 'London', 'EN1 4HB', '07789612354', 'contactus@kevlins.co.uk');
+(13, 'Kevlins', '11 Southbury Rd.', 'London', 'EN1 4HB', '07789612354', 'contactus@kevlins.co.uk'),
+(1, 'dty', 'dmd', 'dmhd', 'dgh', 'dghm', 'mghmg');
 
 -- --------------------------------------------------------
 
@@ -68,14 +90,14 @@ INSERT INTO `customers` (`custID`, `custName`, `custAddress`, `custTown`, `custP
 --
 
 CREATE TABLE IF NOT EXISTS `film` (
-  `filmID` int(10) NOT NULL AUTO_INCREMENT,
+  `filmID` int(10) NOT NULL,
   `filmName` varchar(50) NOT NULL,
   `director` varchar(30) NOT NULL,
   `releaseYear` date NOT NULL,
-  PRIMARY KEY (`filmID`),
+  PRIMARY KEY (`filmName`),
   UNIQUE KEY `filmID` (`filmID`,`filmName`,`director`,`releaseYear`),
   UNIQUE KEY `filmID_2` (`filmID`,`filmName`,`director`,`releaseYear`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -109,11 +131,14 @@ INSERT INTO `items` (`itemID`, `itemDesc`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `members` (
-  `memberID` int(8) NOT NULL AUTO_INCREMENT,
+  `memberID` int(8) NOT NULL,
+  `Title` enum('Mr','Mrs','Ms') NOT NULL,
   `memberName` varchar(30) NOT NULL,
-  `memberStatus` varchar(15) NOT NULL,
-  PRIMARY KEY (`memberID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `memberStatus` enum('Active','Lapsed','Cancelled') NOT NULL,
+  `dateJoined` date NOT NULL,
+  PRIMARY KEY (`memberID`),
+  UNIQUE KEY `memberID` (`memberID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -169,6 +194,21 @@ INSERT INTO `order_items` (`invoice_no`, `item_id`, `itemQty`, `itemPrice`) VALU
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `performance`
+--
+
+CREATE TABLE IF NOT EXISTS `performance` (
+  `performanceID` int(11) NOT NULL,
+  `filmID` int(11) NOT NULL,
+  `screenNo` int(11) NOT NULL,
+  `performDate` int(11) NOT NULL,
+  `seatsRemain` int(11) NOT NULL,
+  PRIMARY KEY (`performanceID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `screen`
 --
 
@@ -177,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `screen` (
   `screenNo` int(11) NOT NULL,
   `seats` int(4) NOT NULL,
   `seatPrice` int(6) NOT NULL,
-  PRIMARY KEY (`cinemaID`,`screenNo`)
+  PRIMARY KEY (`screenNo`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
